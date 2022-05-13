@@ -1,0 +1,81 @@
+#########################################################################
+#                           Liam Retty                                  # 
+#       Chroma Analysis Yaml card to run Analysis for nEXO OD           #                           
+#                           Aug 17 2021                                 #
+#                      lretty@laurentian.ca                             #
+#                                                                       #
+#########################################################################
+
+ChromaPath: '/gpfs/slac/staas/fs1/g/exo/exo_data8/exo_data/users/yangrj/chromasim/chroma-simulation/'  #Path to chroma simulation
+Files: ['/gpfs/slac/staas/fs1/g/exo/exo_data8/exo_data/users/yangrj/chromasim/chroma-simulation/Output/OD_2021/Refl_OC00_ST00/chroma_nEXO_OD_OD_Refl_OC00_ST00_v4_220329_155003_r5453.h5'] # Must be in the square brackets, multiple files can be put inside the same square brackets in quotes.
+OutputFile: '/gpfs/slac/staas/fs1/g/exo/exo_data8/exo_data/users/yangrj/chromasim/chroma-simulation/AnalOutput/Result_OC00_ST00_v4_TEMPORARY.txt'    #Output file
+Verbosity: -1                                           #-1 means no extra prints and 1 will perform extra prints needs help to work
+
+
+Trigger:
+  Active: true                          #True means the function will be active, false means the function will not be active in analysis
+  CountThreshold: 10                    #counts on each PMT to count as a triggered PMT
+  CoincidentTrigger: 5                  #PMTs triggered for the muon to be considered tagged
+  TimeWindow: 200                       #Time window for the photon hits to be registered in ns
+  PrintMuontag: true                    #Prints the boolean for if muon is tagged for each muon
+  PrintTagEfficiency: true              #Prints the fial tagging effeciency as a percent
+
+
+Functions:
+  PrintEfficiency:
+    Active: true                        #Will Print Efficiency be active?
+    Print: true                         #print results to output file
+
+  # IMPORTANT: The data must be reshaped for any of the below functions to run! 
+  # So make sure Reshape is set to "Active: true" if you have ANY of the functions below set to "Active: true".
+  Reshape:
+    Active: false                        
+
+  TimingLightMap:                       
+    Active: false                        #Will timing lightmap be active?
+    Show: false                         #Should the analysis show the plot while running?
+    Save: true                          #Should the analysis save the plot?
+    Surface: None                       #Surface (default is none)
+    RemoveFlag: None                    #remove flag (default is none)
+    ShowSource: false                   #Should the analysis show the source while running?
+  TimeDistribution:
+    Active: false                        #Will time distribution be active?
+    Show: false                         #Should the analysis show the plot while running?
+    Save: true                          #Should the analysis save the plot?
+    logscaleY: true                     #Should The plot have a logScaleY?
+  WavelengthDistribution: 
+    Active: false                        #Will wavelength distribution be active?
+    Show: false                         #Should the analysis show the plot while running?
+    Save: true                          #Should the analysis save the plot?
+  PlotOD_CylinderLightMap:
+    Active: false                        #Will Cylinder lightmap be active?
+    Show: false                         #Should the analysis show the source while running?
+    Save: true                          #Should the analysis save the plot?
+    Surface: None                       #Surface (default is none)
+    logscale: true                      #Should the plot use logscale?
+    RemoveFlag: None                    #remove flag (default is none)
+    ShowSource: false
+  NumberOfPhotons:
+    Active: false                       #Will Number of photons be active?
+    Show: true                          #Should the analysis show the source while running?
+    Save: true                          #Should the analysis save the plot?
+  PlotCylinderLightMap:
+    Active: false                       #Will Cylinder lightmap be active? (May not be functional)
+    Show: false                         #Should the analysis show the source while running?
+    Save: false                         #Should the analysis save the plot?
+  NumberOfPMTCounts:
+    Active: false                        #Will Number of PMT counts be active?
+    Show: false                         #Should the analysis show the source while running?
+    Save: true                          #Should the analysis save the plot? 
+    timeWindow: -1                      # -1 means no time cute, while other positive time values will be the window for the time cuts
+    Print: true                         #print results to output file
+  PlotOD_LastHitTriangle:
+    Active: false                        #Will Last hit triangle be active?
+    Size: (8,6)                         #Size (default is (8,6))
+    RemoveAborted: true                 #Should the function remove aborted photons?
+    averageOverRuns: false              #Should the function average the results over the runs?
+    Show: true                          #Should the analysis show the source while running?
+    Save: true                          #Should the analysis save the plot?
+    
+   
+  
