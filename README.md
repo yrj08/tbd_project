@@ -52,7 +52,7 @@ Makes the individual batch job submission files that each submits a portion of t
 
 ##### ```00_batch_create_sim_sh.sh```
 
-Simply runs ```copying_batch.py```. Kind of an unnecessary file.
+Simply runs ```copying_batch.py``` above. Kind of an unnecessary file.
 
 ##### ```single_batch_maker.py```
 
@@ -62,7 +62,35 @@ Makes a batch job that runs all individual batch job files of a given reflectivi
 
 **Output**: one big ```.sh``` file named ```batch_sim_OCxx_STyy_all.sh``` where similar to the above ```xx``` and ```yy``` are OC and ST refl. values respectively. This single .sh file can simply be run by a ```sbatch``` command.
 
-### 3) Generation of "Analysis" batch job / YAML cards.
-4) more?
+##### ```00_batch_make_master_batch.sh```
 
+Simply runs ```single_batch_maker.py``` described above. May also be rather pointless.
+
+### 3) Generation of "Analysis" batch job / YAML cards.
+
+
+##### ```batch_Anal_template.sh```
+
+Template ```.sh``` file to be modified for each analysis.
+
+Notable lines that will be modified by ```copying_Anal_batch.py```, outlined here for clarity:
+- Line 5: ```#SBATCH --job-name=Anal0000``` The name of the job, 0000 means OC 0% and ST 0%, will be automatically modified depending on the input in ```copying_batch.py``` 
+- Line 6: ```#SBATCH --output=Anal_batchOut-OC00-ST00/AnalOut-OC00-ST00-%j.txt``` The output ```txt``` file location, can be changed at your own leisure I suppose
+- Line 7: ```#SBATCH --error=Anal_batchOut-OC00-ST00/err-AnalOut-OC00-ST00-%j.txt``` Error output file location, »
+- Line 20: ```OUTDIR='/gpfs/slac/staas/fs1/g/exo/exo_data8/exo_data/users/yangrj/chromasim/chroma-simulation/Anal_batchOut-OC00-ST00/'``` The output directory, »
+- Line 31: ```python Analysis/ODAnalysis/ODLightMap.py -y Yaml/OD/Anal_OC00_ST00.yml``` The actual command.
+
+##### ```copying_Anal_batch.py```
+
+Makes the individual analysis batch job submission files for a given reflectivity configuration.
+
+**Input**: OC and ST refl. values. See note above for remark on possible input method improvement.
+
+**Dependencies**: ```batch_Anal_template.sh``` is required as a template to create the ```.sh``` files.
+
+**Output file**: ```batch_Anal_OCxx_STyy_v4.sh``` where ```xx```, ```yy``` are OC/ST reflectivity values
+
+**Modified lines**: 5, 6, 7, 20, 31, as outlined above
+
+### 4) possibly more
 
