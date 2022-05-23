@@ -15,9 +15,15 @@ My fix is to split the CSV file into more manageable parts randomly, into predet
 blah blah
 
 
-### 2) Generation of "Simulation" batch job/YAML cards.
+### 2) Generation of "simulation" YAML cards (Mostly ```YAML/OD``` folder).
 
-Each individual simulation needs its own YAML card, and its corresponding batch job. The below scripts/files are useful in such task:
+Each individual simulation needs its own YAML card. This YAML card will later be referenced by its corresponding batch job, which will be run. The below scripts/files are useful for such a task:
+
+x
+
+### 3) Generation of "simulation" batch files.
+
+The below create batch files which refer to YAML cards outlined above.
 
 #### Relevant files
 
@@ -30,7 +36,7 @@ Notable lines that will be modified by ```copying_batch.py```, outlined here for
 - Line 6: ```#SBATCH --output=batchOut/output-OC00_ST00-%j.txt``` The output ```txt``` file location, can be changed at your own leisure I suppose
 - Line 7: ```#SBATCH --error=batchOut/err-output-OC00-ST00-%j.txt``` Error output file location, »
 - Line 19: ```OUTDIR='/gpfs/slac/staas/fs1/g/exo/exo_data8/exo_data/users/yangrj/chromasim/chroma-simulation/Yaml/OD/OD_OC00_ST00/batchOut/'``` The output directory, »
-- Line 21: ```singularity exec --nv -B /gpfs ../../../../Chroma.sif python ./RunSim.py -y Yaml/OD/OD_OC00_ST00.yaml``` The actual command...
+- Line 21: ```singularity exec --nv -B /gpfs ../../../../Chroma.sif python ./RunSim.py -y Yaml/OD/OD_OC00_ST00.yaml``` The actual command. Calls YAML cards named ```Yaml/OD/OD_OCxx_STyy_v4_zz.yaml```, where ```xx``` is the OC reflectivity value, ```yy``` is the ST reflectivity value, and ```zz``` is the index of the YAML card. The generation of those YAML cards are outlined in the section above.
 
 ##### ```copying_batch.py```
 
@@ -40,7 +46,7 @@ Makes the individual batch job submission files that each submits a portion of t
 
 **Dependencies**: ```batch_sim_template.sh``` is required as a template to create the ```.sh``` files.
 
-**Output files**: ```batch_sim_OCxx_STyy_zz.sh``` where ```xx``` is the OC reflectivity value, ```yy``` is the ST reflectivity value, and ```zz``` is the index of the output files.
+**Output files**: ```batch_sim_OCxx_STyy_zz.sh``` where ```xx```, ```yy``` are OC/ST reflectivity values, and ```zz``` again the index of the output files.
 
 **Modified lines**: 5, 6, 7, 19, 21 as outlined in the previous section.
 
