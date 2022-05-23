@@ -36,21 +36,25 @@ Notable lines that will be modified by ```copying_batch.py```, outlined here for
 
 Makes the individual batch job submission files that each submits a portion of the tasks for a given reflectivity configuration.
 
-Input: OC and ST reflectivity values. -> input method is to be improved: currently the two variables are hard-coded at the beginning of the file, with the modification of those two lines necessary each time a new value is desired. There must be a better way, but ```input()``` function didn't do the trick.
+**Input**: OC and ST reflectivity values. _Note_: input method is to be improved: currently the two variables are hard-coded at the beginning of the file, with the modification of those two lines necessary each time a new value is desired. There must be a better way, but ```input()``` function didn't do the trick.
 
-Dependencies: ```batch_sim_template.sh``` is required as a template to create the ```.sh``` files.
+**Dependencies**: ```batch_sim_template.sh``` is required as a template to create the ```.sh``` files.
 
-Output files: ```batch_sim_OCxx_STyy_zz.sh``` where ```xx``` is the OC reflectivity value, ```yy``` is the ST reflectivity value, and ```zz``` is the index of the output files.
+**Output files**: ```batch_sim_OCxx_STyy_zz.sh``` where ```xx``` is the OC reflectivity value, ```yy``` is the ST reflectivity value, and ```zz``` is the index of the output files.
 
-Modified lines: 5, 6, 7, 19, 21 as outlined in the previous section.
+**Modified lines**: 5, 6, 7, 19, 21 as outlined in the previous section.
+
+##### ```00_batch_create_sim_sh.sh```
+
+Simply runs ```copying_batch.py```. Kind of an unnecessary file.
 
 ##### ```single_batch_maker.py```
 
 Makes a batch job that runs all individual batch job files of a given reflectivity configuration. Useful for big number of files.
 
-Input: OC refl. value, ST refl. value, number of files. Note: similar to the above, the OC/ST refl. value input methods may need improvement. Also number of file is the total number of batch files, thus it is important to not modify the indices to have gaps. The ```copying_batch.py``` should make sure the output files are consetively indexed.
+**Input**: OC refl. value, ST refl. value, number of files. Note: similar to the above, the OC/ST refl. value input methods may need improvement. Also number of file is the total number of batch files, thus it is important to not modify the indices to have gaps. The ```copying_batch.py``` should make sure the output files are consetively indexed.
 
-Output: one big ```.sh``` file named ```batch_sim_OCxx_STyy_all.sh``` where similar to the above ```xx``` and ```yy``` are OC and ST refl. values respectively.
+**Output**: one big ```.sh``` file named ```batch_sim_OCxx_STyy_all.sh``` where similar to the above ```xx``` and ```yy``` are OC and ST refl. values respectively. This single .sh file can simply be run by a ```sbatch``` command.
 
 ### 3) Generation of "Analysis" batch job / YAML cards.
 4) more?
