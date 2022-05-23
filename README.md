@@ -36,7 +36,7 @@ Notable lines that will be modified by ```copying_batch.py```, outlined here for
 - Line 6: ```#SBATCH --output=batchOut/output-OC00_ST00-%j.txt``` The output ```txt``` file location, can be changed at your own leisure I suppose
 - Line 7: ```#SBATCH --error=batchOut/err-output-OC00-ST00-%j.txt``` Error output file location, »
 - Line 19: ```OUTDIR='/gpfs/slac/staas/fs1/g/exo/exo_data8/exo_data/users/yangrj/chromasim/chroma-simulation/Yaml/OD/OD_OC00_ST00/batchOut/'``` The output directory, »
-- Line 21: ```singularity exec --nv -B /gpfs ../../../../Chroma.sif python ./RunSim.py -y Yaml/OD/OD_OC00_ST00.yaml``` The actual command. Calls YAML cards named ```Yaml/OD/OD_OCxx_STyy_v4_zz.yaml```, where ```xx``` is the OC reflectivity value, ```yy``` is the ST reflectivity value, and ```zz``` is the index of the YAML card. The generation of those YAML cards are outlined in the section above.
+- Line 21: ```singularity exec --nv -B /gpfs ../../../../Chroma.sif python ./RunSim.py -y Yaml/OD/OD_OC00_ST00.yaml``` The actual command. Calls YAML cards named ```Yaml/OD/OD_OCxx_STyy_v4_zz.yaml```, where ```xx``` is the OC reflectivity value, ```yy``` is the ST reflectivity value, and ```zz``` is the index of the YAML card. The generation of those YAML cards are outlined in the section above. The YAML cards in ```Yaml/OD``` folder are also needed. This is explained further down the page.
 
 ##### ```copying_batch.py```
 
@@ -66,7 +66,19 @@ Makes a batch job that runs all individual batch job files of a given reflectivi
 
 Simply runs ```single_batch_maker.py``` described above. May also be rather pointless.
 
-### 3) Generation of "Analysis" batch job / YAML cards.
+##### ```Yaml/OD/OD_Yaml_Template.yaml```
+
+YAML card specifying the details of the simulation (reflectivity, surfaces, whatnot). Is duplicated and modified by ```Yaml/OD/copying_yaml.py```.
+
+##### ```Yaml/OD/copying_yaml.py```
+
+Modifies the template YAML card above. 
+
+**Input**: OC / ST refl. value; Total number of muon files wanted, total number of muon files (all files result of splitting the millionMuon.csv), and muons per split csv file. As outlined above, this is currently hard coded.
+
+**Lines modified**: 12 (optical properties), 37 (generator, i.e. source muon file), 38 (Number of photons), 44 (output path), 45 (output file name) to return many files named ```OD_OCxx_STyy_v4_zz.yaml```.
+
+### 4) Generation of "Analysis" batch job / YAML cards.
 
 
 ##### ```batch_Anal_template.sh```
