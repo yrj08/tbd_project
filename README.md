@@ -10,9 +10,7 @@ My fix is to split the CSV file into more manageable parts randomly, into predet
 
 ## Workflow
 
-### 1) Separate ```millionMuon.csv``` into smaller parts
-
-All useful codes are located in Data/OD folder.
+### 1) Separation of ```millionMuon.csv``` into smaller parts (```Data/OD``` folder).
 
 ##### ```Data/OD/Splitting_Muon_File.py```
 
@@ -24,11 +22,25 @@ Splits the "millionMuons.csv" into many smaller files, each containing 100 muons
 
 Basically a batch script to run the above python script.
 
-### 2) Generation of "simulation" YAML cards (Mostly ```YAML/OD``` folder).
+### 2) Generation of "simulation" YAML cards (```YAML/OD``` folder).
 
 Each individual simulation needs its own YAML card. This YAML card will later be referenced by its corresponding batch job, which will be run. The below scripts/files are useful for such a task:
 
-x
+##### ```Yaml/OD/OD_Yaml_Template.yaml```
+
+YAML card specifying the details of the simulation (reflectivity, surfaces, whatnot). Is duplicated and modified by ```Yaml/OD/copying_yaml.py```.
+
+##### ```Yaml/OD/copying_yaml.py```
+
+Modifies the template YAML card above. 
+
+**Input**: OC / ST refl. value; Total number of muon files wanted, total number of muon files (all files result of splitting the millionMuon.csv), and muons per split csv file. As outlined above, this is currently hard coded.
+
+**Lines modified**: 12 (optical properties), 37 (generator, i.e. source muon file), 38 (Number of photons), 44 (output path), 45 (output file name) to return many files named ```OD_OCxx_STyy_v4_zz.yaml```.
+
+##### ```Yaml/OD/00_batch_create_sim_yaml.sh```
+
+Runs the above ```copying_yaml.py``` script. Use of this is optional
 
 ### 3) Generation of "simulation" batch files.
 
@@ -75,20 +87,23 @@ Makes a batch job that runs all individual batch job files of a given reflectivi
 
 Simply runs ```single_batch_maker.py``` described above. May also be rather pointless.
 
-##### ```Yaml/OD/OD_Yaml_Template.yaml```
+### 4) Generation of "Analysis" YAML cards (```Yaml/OD``` folder)
 
-YAML card specifying the details of the simulation (reflectivity, surfaces, whatnot). Is duplicated and modified by ```Yaml/OD/copying_yaml.py```.
+##### ```Yaml/OD/Anal_Yaml_Template.yml``` 
 
-##### ```Yaml/OD/copying_yaml.py```
+Template YAML card that will be copied and modified to run analysis scripts.
 
-Modifies the template YAML card above. 
+##### ```Yaml/OD/copying_anal_yaml.py```
 
-**Input**: OC / ST refl. value; Total number of muon files wanted, total number of muon files (all files result of splitting the millionMuon.csv), and muons per split csv file. As outlined above, this is currently hard coded.
+Python script to generate analysis YAML cards. 
 
-**Lines modified**: 12 (optical properties), 37 (generator, i.e. source muon file), 38 (Number of photons), 44 (output path), 45 (output file name) to return many files named ```OD_OCxx_STyy_v4_zz.yaml```.
+**Input** hard-coded into the code for the moment: a list of job IDs that we want to analyze. Very important to not get mixed up... also make sure the save file names are consistent.
 
-### 4) Generation of "Analysis" batch job / YAML cards.
+Changes lines 10-11 of the YAML template above: 
+- Line 10: list of files (depends on the list of Job IDs);
+- Line 11: output file location/path.
 
+### 5) Generation of "Analysis" batch job files.
 
 ##### ```batch_Anal_template.sh```
 
@@ -113,5 +128,5 @@ Makes the individual analysis batch job submission files for a given reflectivit
 
 **Modified lines**: 5, 6, 7, 20, 31, as outlined above
 
-### 4) possibly more
+### .
 
