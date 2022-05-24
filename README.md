@@ -128,5 +128,8 @@ Makes the individual analysis batch job submission files for a given reflectivit
 
 **Modified lines**: 5, 6, 7, 20, 31, as outlined above
 
-### .
-
+### Main modifications needed:
+- Better input method: 
+- 1) the OC/ST refl. values need a better input method rather than being hard-coded into the scripts. The value need to be consistent for all files with them coded in.
+- 2) when running the analysis, the list of job IDs need to be manually put in due to the way the files are output (by appending job ID into the file name). There may be a better fix.
+- There are lots of commented out garbage codes (my had habit!) that should be taken out or simplified.
