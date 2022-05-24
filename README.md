@@ -12,8 +12,17 @@ My fix is to split the CSV file into more manageable parts randomly, into predet
 
 ### 1) Separate ```millionMuon.csv``` into smaller parts
 
-blah blah
+All useful codes are located in Data/OD folder.
 
+##### ```Data/OD/Splitting_Muon_File.py```
+
+Splits the "millionMuons.csv" into many smaller files, each containing 100 muons, selected at random. No two files will share common muons. It 1) peruses through the big muon file, and randomly assign muons to different files, such that each files has 100 random muons drawn without replacement 2) It outputs the muon files, as ```millionMuons_split100_##.csv```.
+
+**Output**: many many small csv files that is more manageable to use
+
+##### ```Data/OD/batch_splitting_muon.sh```
+
+Basically a batch script to run the above python script.
 
 ### 2) Generation of "simulation" YAML cards (Mostly ```YAML/OD``` folder).
 
